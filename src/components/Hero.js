@@ -142,7 +142,7 @@ function Hero() {
     <section className="hero-section">
       <h1 className="hero-title">Criador de Equipes &amp; Grupos</h1>
       <p className="hero-subtitle">
-        Crie equipes aleatórias automaticamente e de forma gratuita a partir de uma lista de nomes
+        Crie equipes aleatórias automaticamente a partir de uma lista de nomes
       </p>
 
       {/* Campo: "Pessoas por time" */}
@@ -165,10 +165,10 @@ function Hero() {
         {/* Caixa que exibe as categorias */}
         <div className="category-box">
         {categorias.map(cat => (
-  <div key={cat.id} className="category-area">
-    <div className="category-header">
-      <span className="category-name">{cat.nome}</span>
-      <div className="category-actions">
+         <div key={cat.id} className="category-area">
+        <div className="category-header">
+        <span className="category-name">{cat.nome}</span>
+        <div className="category-actions">
         <img
           src={editarIcon}
           alt="Editar"

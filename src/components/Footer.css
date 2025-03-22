@@ -1,0 +1,13 @@
+.footer {
+    background-color: #0d722b;  /* Mesma cor verde usada no header, por exemplo */
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .footer a {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+  
