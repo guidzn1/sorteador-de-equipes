@@ -7,10 +7,10 @@ import deleteIcon from '../assets/delete.png';
 import adicionaIcon from '../assets/adiciona.png';
 
 function Hero() {
-  // Número de pessoas por time (padrão, por exemplo, 6)
+  // Número de pessoas por time (ex.: 6)
   const [pessoasPorTime, setPessoasPorTime] = useState(6);
 
-  // Lista de categorias (cada uma tem id, nome e array de nomes)
+  // Lista de categorias
   const [categorias, setCategorias] = useState([
     { id: 1, nome: 'Categoria 1', nomes: [] }
   ]);
@@ -45,7 +45,7 @@ function Hero() {
     }));
   }
 
-  // Dispara prompt para editar o nome da categoria
+  // Prompt para renomear
   function handleEditarCategoria(id) {
     const novoNome = prompt('Digite o novo nome da categoria:');
     if (novoNome) {
@@ -53,16 +53,18 @@ function Hero() {
     }
   }
 
-  // Atualiza lista de nomes conforme o usuário digita no textarea
+  // Atualiza lista de nomes no textarea
   function handleNomesChange(id, texto) {
-    const linhas = texto.split('\n');
+    const linhas = texto.split('\n'); // Mantém quebras de linha
     setCategorias(categorias.map(cat => {
-      if (cat.id === id) return { ...cat, nomes: linhas };
+      if (cat.id === id) {
+        return { ...cat, nomes: linhas };
+      }
       return cat;
     }));
   }
 
-  // Função auxiliar para embaralhar um array (opcional)
+  // Embaralha um array (Fisher-Yates)
   function shuffleArray(array) {
     const arr = [...array];
     for (let i = arr.length - 1; i > 0; i--) {
@@ -72,27 +74,56 @@ function Hero() {
     return arr;
   }
 
-  // Gera os times: simplesmente particiona os jogadores em blocos de "pessoasPorTime"
+  // Gera as equipes usando round-robin por categoria
   function gerarEquipes() {
-    let players = [];
+    // 1. Reúne todos os jogadores para saber quantos times teremos
+    let totalJogadores = 0;
     categorias.forEach(cat => {
       cat.nomes.forEach(nome => {
         if (nome.trim() !== '') {
-          players.push(nome.trim());
+          totalJogadores++;
         }
       });
     });
 
-    // Embaralha os jogadores (opcional; remova a linha abaixo se não quiser embaralhar)
-    players = shuffleArray(players);
+    // 2. Calcula quantos times existem (por ex.: 21 jogadores, 6 por time → 4 times)
+    const numTimes = Math.ceil(totalJogadores / pessoasPorTime);
 
-    const newTeams = [];
-    let index = 0;
-    while (index < players.length) {
-      newTeams.push(players.slice(index, index + pessoasPorTime));
-      index += pessoasPorTime;
+    // 3. Cria um array de times vazios
+    const teams = [];
+    for (let i = 0; i < numTimes; i++) {
+      teams.push([]); // cada time é um array de nomes
     }
-    setTimes(newTeams);
+
+    // 4. Para cada categoria, embaralha e distribui seus jogadores em round-robin
+    let currentTeamIndex = 0;
+    categorias.forEach(cat => {
+      // Filtra nomes válidos e embaralha
+      const catPlayers = shuffleArray(
+        cat.nomes
+          .map(nome => nome.trim())
+          .filter(nome => nome !== '')
+      );
+
+      // Aloca cada jogador no próximo time que não esteja cheio
+      catPlayers.forEach(player => {
+        // Se todos os times estiverem cheios, não aloca mais (ou poderia alocar no último time)
+        let attempts = 0;
+        while (teams[currentTeamIndex].length >= pessoasPorTime && attempts < numTimes) {
+          currentTeamIndex = (currentTeamIndex + 1) % numTimes;
+          attempts++;
+        }
+
+        // Se ainda houver espaço em algum time, aloca
+        if (teams[currentTeamIndex].length < pessoasPorTime) {
+          teams[currentTeamIndex].push(player);
+          // Passa para o próximo time
+          currentTeamIndex = (currentTeamIndex + 1) % numTimes;
+        }
+      });
+    });
+
+    setTimes(teams);
   }
 
   return (
@@ -166,7 +197,10 @@ function Hero() {
           <h2>Equipes:</h2>
           <div className="teams-wrapper">
             {times.map((time, index) => (
-              <div key={index} className={`team-box ${index % 2 === 0 ? 'team-dark' : 'team-light'}`}>
+              <div
+                key={index}
+                className={`team-box ${index % 2 === 0 ? 'team-dark' : 'team-light'}`}
+              >
                 <h3>Time {index + 1}</h3>
                 {time.map((jogador, idx) => (
                   <p key={idx}>{jogador}</p>
