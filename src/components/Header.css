@@ -1,0 +1,18 @@
+.header {
+    /* Ajuste as cores de acordo com o seu layout */
+    background-color: #fdfdfd; /* Exemplo de verde escuro */
+    color: #ffffff;           /* Texto branco */
+    display: flex;           /* Usamos flex para centralizar */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente */
+    height: 80px;            /* Ajuste a altura do header */
+    border-top: 5px solid #000000; /* Exemplo de borda superior preta */
+  }
+  
+
+  
+  /* Caso use uma imagem, por exemplo, .logo */
+  .logo {
+    max-height: 60px; /* Ajuste conforme necessário */
+  }
+  
