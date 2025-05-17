@@ -2,277 +2,299 @@
 /* UNIVERSAL - BOA PRÁTICA: garante que padding e bordas não "estourem" width */
 /* -------------------------------------------------------------------------- */
 * {
-    box-sizing: border-box;
-  }
-  
-  /* -------------------------------------------------------------------------- */
-  /* DESKTOP STYLES (padrão)                                                   */
-  /* -------------------------------------------------------------------------- */
-  
-  /* Seção principal, fundo verde */
+  box-sizing: border-box;
+}
+
+/* -------------------------------------------------------------------------- */
+/* DESKTOP STYLES (padrão)                                                   */
+/* -------------------------------------------------------------------------- */
+
+/* Seção principal, fundo verde */
+.hero-section {
+  background-color: #0B3D02;
+  padding: 40px;
+  text-align: center;
+  min-height: 100vh;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+/* Título principal */
+.hero-title {
+  font-size: 36px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Subtítulo */
+.hero-subtitle {
+  font-size: 14px;
+  margin: 10px 0 50px 0;
+}
+
+/* Linha com label e input para "Pessoas por time" */
+.input-row {
+  margin-bottom: 20px;
+}
+.input-row label {
+  margin-right: 10px;
+  font-size: 16px;
+}
+.input-row input {
+  width: 60px;
+  text-align: center;
+  font-size: 16px;
+  padding: 5px;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+}
+
+/* Campos de jogadores fixos */
+.fixed-inputs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.fixed-inputs input {
+  width: 45%;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Container cinza central */
+.categories-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 30px;
+  background-color: #d9d9d9;
+  border-radius: 10px;
+  padding: 20px;
+  position: relative;
+}
+
+/* Botão "Insira a lista de nomes" */
+.insert-names-btn {
+  background-color: #1A4F08;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+/* Caixa que envolve as categorias */
+.category-box {
+  width: 100%;
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+/* Cada bloco de categoria */
+.category-area {
+  margin-bottom: 20px;
+}
+
+/* Cabeçalho da categoria */
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.category-name {
+  font-weight: bold;
+  color: #333;
+}
+.category-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Ícones */
+.icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* Textarea de nomes */
+.category-area textarea {
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  resize: none;
+  font-size: 14px;
+}
+
+/* Botão flutuante de adicionar categoria */
+.add-category-btn {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1A4F08;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.add-category-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+/* Botão para gerar as equipes */
+.generate-btn {
+  background-color: #1A4F08;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+.generate-btn:hover {
+  background-color: #267D10;
+}
+
+/* Seção das equipes */
+.teams-section {
+  margin-top: 40px;
+}
+.teams-section h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+/* Container dos times */
+.teams-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Caixa de cada time */
+.team-box {
+  width: 200px;
+  min-height: 150px;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: left;
+  color: #fff;
+}
+
+/* Variação de cores para os times */
+.team-dark {
+  background-color: #004F04;
+}
+.team-light {
+  background-color: #2E7D32;
+}
+
+.team-box h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* MOBILE (até 768px)                                                        */
+/* -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
   .hero-section {
-    background-color: #0B3D02;
-    padding: 40px;
-    text-align: center;
-    min-height: 100vh;
-    color: #fff;
-    font-family: Arial, sans-serif;
+    padding: 20px;
+    min-height: auto;
   }
-  
-  /* Título principal */
+
   .hero-title {
     font-size: 36px;
-    margin: 0;
-    padding: 0;
   }
-  
-  /* Subtítulo */
   .hero-subtitle {
     font-size: 14px;
-    margin: 10px 0 50px 0;
+    margin: 8px 0 40px 0;
   }
-  
-  /* Linha com label e input para "Pessoas por time" */
-  .input-row {
-    margin-bottom: 20px;
-  }
+
   .input-row label {
-    margin-right: 10px;
-    font-size: 16px;
-  }
-  .input-row input {
-    width: 60px;
-    text-align: center;
-    font-size: 16px;
-    padding: 5px;
-    border: none;
-    border-radius: 4px;
-    outline: none;
-  }
-  
-  /* Container cinza central */
-  .categories-container {
-    width: 100%;             /* Ocupa 100% da largura disponível */
-    max-width: 500px;        /* Limite de 500px no desktop */
-    margin: 0 auto 30px;     /* Centraliza horizontalmente e espaça embaixo */
-    background-color: #d9d9d9;
-    border-radius: 10px;
-    padding: 20px;
-    position: relative;      /* Necessário para posicionar o botão absoluto */
-  }
-  
-  /* Botão "Insira a lista de nomes" */
-  .insert-names-btn {
-    background-color: #1A4F08;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 20px;
-    margin-bottom: 20px;
-    font-size: 16px;
-  }
-  
-  /* Caixa que envolve as categorias */
-  .category-box {
-    width: 100%;             /* Garante que o box não ultrapasse o container */
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;     /* Espaço entre boxes, se houver mais de um */
-  }
-  
-  /* Cada bloco de categoria */
-  .category-area {
-    margin-bottom: 20px;
-  }
-  
-  /* Cabeçalho da categoria: nome à esquerda e ações à direita */
-  .category-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  .category-name {
-    font-weight: bold;
-    color: #333;
-  }
-  /* Container dos botões de ação (editar/excluir) */
-  .category-actions {
-    display: flex;
-    gap: 10px;
-  }
-  
-  /* Ícones */
-  .icon {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-  }
-  
-  /* Textarea de nomes */
-  .category-area textarea {
-    width: 100%;
-    max-width: 100%;         /* Garante que não extrapole a largura */
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 10px;
-    resize: none;
     font-size: 14px;
   }
-  
-  /* Botão flutuante para adicionar categoria */
+  .input-row input {
+    width: 50px;
+    font-size: 14px;
+    padding: 4px;
+  }
+
+  .fixed-inputs {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .fixed-inputs input {
+    width: 100%;
+  }
+
+  .categories-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto 20px;
+    padding: 15px;
+  }
+
+  .insert-names-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .category-box {
+    padding: 15px;
+  }
+
+  .category-area textarea {
+    padding: 8px;
+    font-size: 12px;
+  }
+
   .add-category-btn {
-    position: absolute;
-    bottom: 10px;            /* 10px do fundo do container */
-    left: 50%;               /* Centraliza horizontalmente */
-    transform: translateX(-50%);
-    background-color: #1A4F08;
-    border: none;
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 36px;
+    height: 36px;
   }
   .add-category-btn img {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
   }
-  
-  /* Botão para gerar as equipes */
+
   .generate-btn {
-    background-color: #1A4F08;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-bottom: 30px;
+    padding: 8px 16px;
+    font-size: 14px;
   }
-  .generate-btn:hover {
-    background-color: #267D10;
-  }
-  
-  /* Seção das equipes */
-  .teams-section {
-    margin-top: 40px;
-  }
+
   .teams-section h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #fff;
+    font-size: 20px;
+    margin-bottom: 15px;
   }
-  
-  /* Container dos times */
+
   .teams-wrapper {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 15px;
   }
-  
-  /* Caixa de cada time */
+
   .team-box {
-    width: 200px;
-    min-height: 150px;
-    border-radius: 10px;
+    width: 100%;
+    min-height: auto;
     padding: 10px;
-    text-align: left;
-    color: #fff;
   }
-  
-  /* Variação de cores para os times */
-  .team-dark {
-    background-color: #004F04;
-  }
-  .team-light {
-    background-color: #2E7D32;
-  }
-  
-  .team-box h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-  }
-  
-  /* -------------------------------------------------------------------------- */
-  /* MOBILE (até 768px)                                                        */
-  /* -------------------------------------------------------------------------- */
-  @media (max-width: 768px) {
-    .hero-section {
-      padding: 20px;
-      min-height: auto;
-    }
-  
-    .hero-title {
-      font-size: 36px;
-    }
-    .hero-subtitle {
-      font-size: 14px;
-      margin: 8px 0 40px 0;
-    }
-  
-    .input-row label {
-      font-size: 14px;
-    }
-    .input-row input {
-      width: 50px;
-      font-size: 14px;
-      padding: 4px;
-    }
-  
-    .categories-container {
-      width: 100%;
-      max-width: 100%; /* para ocupar toda a largura no mobile */
-      margin: 0 auto 20px;
-      padding: 15px;
-    }
-  
-    .insert-names-btn {
-      padding: 8px 16px;
-      font-size: 14px;
-    }
-  
-    .category-box {
-      padding: 15px;
-    }
-  
-    .category-area textarea {
-      padding: 8px;
-      font-size: 12px;
-    }
-  
-    .add-category-btn {
-      width: 36px;
-      height: 36px;
-    }
-    .add-category-btn img {
-      width: 16px;
-      height: 16px;
-    }
-  
-    .generate-btn {
-      padding: 8px 16px;
-      font-size: 14px;
-    }
-  
-    .teams-section h2 {
-      font-size: 20px;
-      margin-bottom: 15px;
-    }
-  
-    .teams-wrapper {
-      flex-direction: column;
-      gap: 15px;
-    }
-  
-    .team-box {
-      width: 100%;
-      min-height: auto;
-      padding: 10px;
-    }
-  }
-  
+}
