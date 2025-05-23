@@ -127,7 +127,7 @@ function Hero() {
               setFixoEnabled(!fixoEnabled);
               if (fixoEnabled) setFixos(['','']);
             }}
-          /> Jogador fixo?
+          /> 2 Goleiros fixos?
         </label>
       </div>
 
