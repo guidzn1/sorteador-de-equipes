@@ -5,6 +5,7 @@ import editarIcon from '../assets/editar.png';
 import deleteIcon from '../assets/delete.png';
 import adicionaIcon from '../assets/adiciona.png';
 import compartilharIcon from '../assets/compartilhar.png';
+import checkIcon from '../assets/check.png';
 
 function Hero() {
   const [pessoasPorTime, setPessoasPorTime] = useState(6);
@@ -16,6 +17,7 @@ function Hero() {
   const [times, setTimes] = useState([]);
   const [history, setHistory] = useState([]);
   const [toast, setToast] = useState('');
+  const [loading, setLoading] = useState(false);
 
   function adicionarCategoria() {
     setCategorias([
@@ -35,17 +37,13 @@ function Hero() {
   function handleEditarCategoria(id) {
     const nn = prompt('Novo nome:');
     if (nn) {
-      setCategorias(
-        categorias.map(c => (c.id === id ? { ...c, nome: nn } : c))
-      );
+      setCategorias(categorias.map(c => c.id === id ? { ...c, nome: nn } : c));
     }
   }
 
   function handleNomesChange(id, txt) {
     const linhas = txt.split('\n');
-    setCategorias(
-      categorias.map(c => (c.id === id ? { ...c, nomes: linhas } : c))
-    );
+    setCategorias(categorias.map(c => c.id === id ? { ...c, nomes: linhas } : c));
   }
 
   function shuffle(arr) {
@@ -58,77 +56,69 @@ function Hero() {
   }
 
   function gerarEquipes() {
-    // 1) fixos
-    const validFixos = fixos.map(f => f.trim()).filter(Boolean).slice(0, 2);
+    setLoading(true);
+    setTimeout(() => {
+      // 1) fixos válidos
+      const validFixos = fixos.map(f => f.trim()).filter(Boolean).slice(0, 2);
 
-    // 2) pool
-    let pool = [];
-    categorias.forEach(cat =>
-      cat.nomes.forEach(n => {
-        const nm = n.trim();
-        if (nm && !validFixos.includes(nm)) {
-          pool.push({ nome: nm, catId: cat.id });
+      // 2) pool de não-fixos
+      let pool = [];
+      categorias.forEach(cat =>
+        cat.nomes.forEach(n => {
+          const nm = n.trim();
+          if (nm && !validFixos.includes(nm)) {
+            pool.push({ nome: nm, catId: cat.id });
+          }
+        })
+      );
+      pool = shuffle(pool);
+
+      // 3) total e número de times
+      const totalPlayers = pool.length + validFixos.length;
+      const numTimes = Math.ceil(totalPlayers / pessoasPorTime);
+
+      // 4) inicializa times
+      const teams = Array.from({ length: numTimes }, () => ({
+        jogadores: [], cats: new Set()
+      }));
+
+      // 5) coloca fixos
+      validFixos.forEach((f, i) => {
+        if (i < teams.length) teams[i].jogadores.push(f);
+      });
+
+      // 6) preenche até penúltimo e resto no último
+      for (let i = 0; i < teams.length; i++) {
+        const capacity = fixoEnabled && validFixos.length === 2
+          ? (i < 2
+              ? pessoasPorTime
+              : (i < teams.length - 1
+                  ? pessoasPorTime - 1
+                  : Infinity))
+          : (i < teams.length - 1
+              ? pessoasPorTime
+              : Infinity);
+        while (teams[i].jogadores.length < capacity && pool.length) {
+          let idx = pool.findIndex(p => !teams[i].cats.has(p.catId));
+          if (idx < 0) idx = 0;
+          const p = pool.splice(idx, 1)[0];
+          teams[i].jogadores.push(p.nome);
+          teams[i].cats.add(p.catId);
         }
-      })
-    );
-    pool = shuffle(pool);
-
-    // 3) total e número de times
-    const totalPlayers = pool.length + validFixos.length;
-    const numTimes = Math.ceil(totalPlayers / pessoasPorTime);
-
-    // 4) inicializa times
-    const teams = Array.from({ length: numTimes }, () => ({
-      jogadores: [],
-      cats: new Set()
-    }));
-
-    // 5) coloca fixos
-    validFixos.forEach((f, i) => {
-      if (i < teams.length) teams[i].jogadores.push(f);
-    });
-
-    // 6) preenche sequencialmente
-    for (let i = 0; i < teams.length; i++) {
-      let capacity;
-      if (fixoEnabled && validFixos.length === 2) {
-        if (i < 2) {
-          capacity = pessoasPorTime;            // times 1 e 2: 6
-        } else if (i < teams.length - 1) {
-          capacity = pessoasPorTime - 1;        // times intermediários: 5
-        } else {
-          capacity = Infinity;                  // último: resto
-        }
-      } else {
-        // sem fixos: todos até penúltimo cheio, último resto
-        capacity = i < teams.length - 1
-          ? pessoasPorTime
-          : Infinity;
       }
-      while (
-        teams[i].jogadores.length < capacity &&
-        pool.length > 0
-      ) {
-        // tenta escolha sem duplicar categoria
-        let idx = pool.findIndex(p => !teams[i].cats.has(p.catId));
-        if (idx < 0) idx = 0;
-        const p = pool.splice(idx, 1)[0];
-        teams[i].jogadores.push(p.nome);
-        teams[i].cats.add(p.catId);
-      }
-    }
 
-    // 7) atualiza estado e histórico
-    const result = teams.map(t => t.jogadores);
-    setTimes(result);
+      const result = teams.map(t => t.jogadores);
+      setTimes(result);
 
-    const snapshot = result
-      .map((t, i) => `Time ${i + 1}: ${t.join(', ')}`)
-      .join('\n');
-    setHistory([{ when: new Date().toLocaleString(), text: snapshot }, ...history]);
+      const snapshot = result
+        .map((t, i) => `Time ${i + 1}: ${t.join(', ')}`)
+        .join('\n');
+      setHistory([{ when: new Date().toLocaleString(), text: snapshot }, ...history]);
 
-    setToast('Equipes geradas!');
-    setTimeout(() => setToast(''), 2000);
+      setLoading(false);
+      setToast('Equipes geradas!');
+      setTimeout(() => setToast(''), 2000);
+    }, 1000);
   }
 
   function handleShare() {
@@ -267,7 +257,15 @@ function Hero() {
         </details>
       )}
 
-      {toast && <div className="toast">{toast}</div>}
+      {(loading || toast) && (
+        <div className="toast">
+          {loading
+            ? <span className="line-md--loading-loop"></span>
+            : <img src={checkIcon} alt="OK" />
+          }
+          {loading ? 'Gerando equipes...' : toast}
+        </div>
+      )}
     </section>
   );
 }
