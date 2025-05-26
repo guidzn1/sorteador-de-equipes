@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Hero.css';
 
 import editarIcon from '../assets/editar.png';
@@ -7,7 +7,6 @@ import adicionaIcon from '../assets/adiciona.png';
 import compartilharIcon from '../assets/compartilhar.png';
 
 function Hero() {
-  // Estados principais
   const [pessoasPorTime, setPessoasPorTime] = useState(6);
   const [fixoEnabled, setFixoEnabled] = useState(false);
   const [fixos, setFixos] = useState(['', '']);
@@ -18,7 +17,6 @@ function Hero() {
   const [history, setHistory] = useState([]);
   const [toast, setToast] = useState('');
 
-  // Helpers de categoria
   function adicionarCategoria() {
     setCategorias([
       ...categorias,
@@ -50,7 +48,6 @@ function Hero() {
     );
   }
 
-  // shuffle Fisher–Yates
   function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -60,87 +57,91 @@ function Hero() {
     return a;
   }
 
-  // Sorteio de equipes
   function gerarEquipes() {
-    // 1) fixos válidos
-    const validFixos = fixos
-      .map(f => f.trim())
-      .filter(Boolean)
-      .slice(0, 2);
+    // 1) fixos
+    const validFixos = fixos.map(f => f.trim()).filter(Boolean).slice(0, 2);
 
-    // 2) pool de não-fixos com categoria
+    // 2) pool
     let pool = [];
-    categorias.forEach(cat => {
+    categorias.forEach(cat =>
       cat.nomes.forEach(n => {
         const nm = n.trim();
         if (nm && !validFixos.includes(nm)) {
           pool.push({ nome: nm, catId: cat.id });
         }
-      });
-    });
+      })
+    );
     pool = shuffle(pool);
 
-    // 3) contagens
-    const total = pool.length + validFixos.length;
-    const numTimes = Math.ceil(total / pessoasPorTime);
+    // 3) total e número de times
+    const totalPlayers = pool.length + validFixos.length;
+    const numTimes = Math.ceil(totalPlayers / pessoasPorTime);
 
-    // 4) slots por time
-    const base = Math.floor(pool.length / numTimes);
-    const extra = pool.length % numTimes;
-    const slots = Array.from({ length: numTimes },
-      (_, i) => base + (i < extra ? 1 : 0)
-    );
-
-    // 5) inicializa times
+    // 4) inicializa times
     const teams = Array.from({ length: numTimes }, () => ({
       jogadores: [],
-      cats: new Set(),
-      filled: 0
+      cats: new Set()
     }));
 
-    // 6) coloca fixos nos 2 primeiros
+    // 5) coloca fixos
     validFixos.forEach((f, i) => {
       if (i < teams.length) teams[i].jogadores.push(f);
     });
 
-    // 7) aloca por categoria respeitando slots
-    function assign(p) {
-      const cand = teams
-        .map((t, idx) => ({ t, idx }))
-        .filter(o => o.t.filled < slots[o.idx]);
-      if (!cand.length) return;
-      const nodup = cand.filter(o => !o.t.cats.has(p.catId));
-      const choice = (nodup.length ? nodup : cand)
-        .sort((a, b) => a.t.filled - b.t.filled)[0];
-      choice.t.jogadores.push(p.nome);
-      choice.t.cats.add(p.catId);
-      choice.t.filled++;
+    // 6) preenche sequencialmente
+    for (let i = 0; i < teams.length; i++) {
+      let capacity;
+      if (fixoEnabled && validFixos.length === 2) {
+        if (i < 2) {
+          capacity = pessoasPorTime;            // times 1 e 2: 6
+        } else if (i < teams.length - 1) {
+          capacity = pessoasPorTime - 1;        // times intermediários: 5
+        } else {
+          capacity = Infinity;                  // último: resto
+        }
+      } else {
+        // sem fixos: todos até penúltimo cheio, último resto
+        capacity = i < teams.length - 1
+          ? pessoasPorTime
+          : Infinity;
+      }
+      while (
+        teams[i].jogadores.length < capacity &&
+        pool.length > 0
+      ) {
+        // tenta escolha sem duplicar categoria
+        let idx = pool.findIndex(p => !teams[i].cats.has(p.catId));
+        if (idx < 0) idx = 0;
+        const p = pool.splice(idx, 1)[0];
+        teams[i].jogadores.push(p.nome);
+        teams[i].cats.add(p.catId);
+      }
     }
-    pool.forEach(assign);
 
-    // 8) resultado
+    // 7) atualiza estado e histórico
     const result = teams.map(t => t.jogadores);
     setTimes(result);
 
-    // 9) histórico
     const snapshot = result
       .map((t, i) => `Time ${i + 1}: ${t.join(', ')}`)
       .join('\n');
     setHistory([{ when: new Date().toLocaleString(), text: snapshot }, ...history]);
 
-    // 10) feedback
     setToast('Equipes geradas!');
     setTimeout(() => setToast(''), 2000);
   }
 
-  // Compartilhar resultado (cópia para clipboard)
   function handleShare() {
     const txt = times
       .map((t, i) => `Time ${i + 1}: ${t.join(', ')}`)
       .join('\n\n');
-    navigator.clipboard.writeText(txt);
-    setToast('Resultado copiado!');
-    setTimeout(() => setToast(''), 2000);
+    if (navigator.share) {
+      navigator.share({ title: 'Equipes Sorteadas', text: txt });
+    } else {
+      navigator.clipboard.writeText(txt);
+      setToast('Copiado para área de transferência!');
+      setTimeout(() => setToast(''), 2000);
+    }
   }
 
   return (
@@ -170,7 +171,6 @@ function Hero() {
           2 Goleiros fixos?
         </label>
       </div>
-
       {fixoEnabled && (
         <div className="fixed-inputs">
           <input
@@ -235,7 +235,9 @@ function Hero() {
               {times.map((t, i) => (
                 <div
                   key={i}
-                  className={`team-box fade-in ${i % 2 === 0 ? 'team-dark' : 'team-light'}`}
+                  className={`team-box fade-in ${
+                    i % 2 === 0 ? 'team-dark' : 'team-light'
+                  }`}
                 >
                   <h3>Time {i + 1}</h3>
                   {t.map((p, j) => (
@@ -245,8 +247,6 @@ function Hero() {
               ))}
             </div>
           </div>
-
-          {/* Botão compartilhar */}
           <div className="share-container">
             <button className="share-btn" onClick={handleShare}>
               <img src={compartilharIcon} alt="Compartilhar" /> Compartilhar
@@ -255,7 +255,6 @@ function Hero() {
         </>
       )}
 
-      {/* Histórico */}
       {history.length > 0 && (
         <details className="history">
           <summary>Histórico de sorteios</summary>
@@ -268,7 +267,6 @@ function Hero() {
         </details>
       )}
 
-      {/* Toast de feedback */}
       {toast && <div className="toast">{toast}</div>}
     </section>
   );
