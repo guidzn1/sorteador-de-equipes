@@ -1,70 +1,92 @@
-# Getting Started with Create React App
+# Criador de Equipes & Grupos
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Um pequeno aplicativo **React** para facilitar a divisão de jogadores em equipes de forma aleatória, equilibrada e personalizável.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📖 Descrição
 
-### `npm start`
+Este projeto permite que você:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Defina quantas **pessoas por time** deseja.
+- Opte por **2 goleiros fixos** (que serão alocados nos dois primeiros times).
+- Crie **categorias** (por exemplo: habilidosos, medianos, iniciantes) e evite dupla alocação.
+- Gere equipes aleatórias, respeitando o número de vagas e deixando o **resto** apenas no último time.
+- Visualize o **histórico** de sorteios.
+- **Exporte** ou copie para a área de transferência o resultado.
+- **Compartilhe** diretamente em dispositivos móveis.
+- Veja um **feedback visual** com spinner de carregamento e notificações.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🚀 Tecnologias
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **React** (create-react-app)
+- **CSS** (layout responsivo, animações simples)
+- **API Web Share** (para compartilhar em mobile)
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ⚙️ Pré-requisitos
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js v14+ 
+- npm ou yarn
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 📥 Instalação
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Clone este repositório:
+   ```bash
+   git clone https://github.com/SEU_USUARIO/criador-equipes.git
+   ```
+2. Acesse a pasta do projeto:
+   ```bash
+   cd criador-equipes
+   ```
+3. Instale as dependências:
+   ```bash
+   npm install
+   # ou yarn install
+   ```
+4. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm start
+   # ou yarn start
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+O app estará disponível em `http://localhost:3000`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 📝 Uso
 
-## Learn More
+1. Defina **Pessoas por time**.
+2. (Opcional) Marque **2 Goleiros fixos** e informe os nomes.
+3. Adicione categorias e insira listas de nomes (uma por linha).
+4. Clique em **Gerar Equipes** e aguarde o carregamento.
+5. Visualize, copie, exporte ou compartilhe o resultado.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🤝 Contribuição
 
-### Code Splitting
+1. Faça um fork deste repositório.
+2. Crie uma **branch** para sua feature ou correção: `git checkout -b feature/nome-da-sua-feature`
+3. Faça suas alterações e commit: `git commit -m "Descrição da mudança"`
+4. Push para sua branch: `git push origin feature/nome-da-sua-feature`
+5. Abra um **Pull Request**.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 📄 Licença
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Distribuído sob a licença **MIT**. Veja o arquivo [LICENSE](./LICENSE) para mais detalhes.
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 👤 Autor
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Guilherme Lima Torres**  
+Contato: +55 94 99179-3586  
+Email: gui09lima@gmail.com
